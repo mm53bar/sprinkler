@@ -5,10 +5,14 @@ require 'packages/update'
 require 'packages/git'
 require 'packages/root'
 require 'packages/host'
+require 'packages/deploy'
+require 'packages/init'
 
 policy :stack, :roles => :app do
-  #requires :system_update
+  requires :initialize
+  requires :system_update
   requires :host
+  requires :deployer
   #requires :lock_down_root
   requires :scm
   #requires :rvm
