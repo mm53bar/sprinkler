@@ -1,9 +1,16 @@
-require 'packages/system_update'
-require 'packages/git'
+$: << File.dirname(__FILE__)
 
-policy :rails_stack, :roles => :app do
-  requires :system_update
-  requires :git
+require 'config'
+require 'packages/update'
+require 'packages/git'
+require 'packages/root'
+require 'packages/host'
+
+policy :stack, :roles => :app do
+  #requires :system_update
+  requires :host
+  #requires :lock_down_root
+  requires :scm
   #requires :rvm
   #requires :rails, :version => '2.1.0'
   #requires :appserver

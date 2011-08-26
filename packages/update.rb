@@ -1,4 +1,4 @@
-package :system_update, :provides => :system_update do
+package :update, :provides => :system_update do
   description "System Update"
   
   requires :apt_update, :apt_upgrade
