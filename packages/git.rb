@@ -6,7 +6,7 @@ package :git, :provides => :scm do
 end
 
 package :git_core do
-  descrition "Git Core"
+  description "Git Core"
   apt 'git-core'
   
   verify do
