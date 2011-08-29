@@ -10,13 +10,13 @@ package :upstream_configuration do
   description "Nginx as Reverse Proxy Configuration for Unicorn"
   requires :nginx
   
-  config_file = '/etc/nginx/sites-available/filter'
-  symlink_file = '/etc/nginx/sites-enabled/filter'
+  config_file = '/usr/local/nginx/sites-available/filter'
+  symlink_file = '/usr/local/nginx/sites-enabled/filter'
   config_template = `cat #{File.join(File.dirname(__FILE__), '..', 'assets', 'unicorn.conf')}`
   
   push_text config_template, config_file
   runner "ln -s #{config_file} #{symlink_file}"
-  runner '/etc/init.d/nginx start'
+  runner '/etc/init.d/nginx restart'
 
   verify do
     has_file config_file
