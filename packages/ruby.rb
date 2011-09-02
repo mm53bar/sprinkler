@@ -58,7 +58,12 @@ end
 package :add_bundler do
   requires :default_ruby
   
-  runner "gem install bundler"
+  # only need to symlink bundler because all other gems should be in Gemfile and can be run using bundle exec (or binstubs)
+  runner "gem install bundler --version=1.0.18"
+  runner "ln -s /usr/local/rubies/ruby-1.9.2-p290/lib/ruby/gems/1.9.1/gems/bundler-1.0.18/bin/bundle /usr/local/bin/bundle"
   
-  verify { @commands << 'gem list | grep bundler' }
+  verify do 
+    @commands << 'gem list | grep bundler' 
+    has_symlink '/usr/local/bin/bundle', '/usr/local/rubies/ruby-1.9.2-p290/lib/ruby/gems/1.9.1/gems/bundler-1.0.18/bin/bundle'
+  end
 end
