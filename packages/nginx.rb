@@ -25,7 +25,7 @@ package :nginx_source_core do
   #  option       ['sbin-path=/usr/sbin/nginx']
   #end
   
-  runner "mkdir -p /usr/local/nginx && mkdir -p /usr/local/build && mkdir -p /usr/local/srouces"
+  runner "mkdir -p /usr/local/nginx && mkdir -p /usr/local/build && mkdir -p /usr/local/sources"
   runner "wget -cq --directory-prefix='/usr/local/sources' http://nginx.org/download/nginx-1.0.5.tar.gz"
   runner "cd /usr/local/build && tar xzf /usr/local/sources/nginx-1.0.5.tar.gz"
   runner "cd /usr/local/build/nginx-1.0.5 && ./configure --prefix=/usr/local/nginx --with-http_ssl_module --with-http_stub_status_module --with-http_gzip_static_module --without-mail_pop3_module --without-mail_imap_module --without-mail_smtp_module --sbin-path=/usr/local/sbin/nginx"
