@@ -11,27 +11,28 @@ require 'packages/ufw'
 require 'packages/utilities'
 require 'packages/ssh'
 require 'packages/timezone'
-require 'packages/rvm'
+#require 'packages/rvm'
 require 'packages/postgres'
 require 'packages/nginx'
 require 'packages/unicorn'
 require 'packages/filter'
+require 'packages/ruby'
 
 policy :stack, :roles => :app do
   requires :initialize
-  requires :system_update
-  #requires :timezone           # TODO:  Not sure if this is actually needed
-  requires :host
-  requires :deployer
-  #requires :firewall
-  requires :scm
+  #requires :system_update
+  ##requires :timezone           # TODO:  Not sure if this is actually needed
+  #requires :host
+  #requires :deployer
+  ##requires :firewall
+  #requires :scm
   requires :ruby               # TODO: Resolve issues with verifying rvm install
-  requires :database
-  requires :appserver
-  requires :webserver
-  #requires :logrotate
-  #requires :ssh                # TODO: turn this on once policy is good.  It'll disable root login so make sure everything is good!
-  requires :app
+  #requires :database
+  #requires :appserver
+  #requires :webserver
+  ##requires :logrotate
+  ##requires :ssh                # TODO: turn this on once policy is good.  It'll disable root login so make sure everything is good!
+  #requires :app
 end
 
 deployment do
