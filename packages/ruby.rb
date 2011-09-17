@@ -1,7 +1,7 @@
 package :ruby_build, :provides => :ruby do
   description 'Install rubies using ruby-build'
   
-  requires :install_ruby_build, :default_rubies, :default_ruby, :add_bundler
+  requires :install_ruby_build, :default_rubies, :default_ruby, :add_bundler, :config_gemrc
 end
 
 package :install_ruby_build do
@@ -56,7 +56,7 @@ package :ruby_dependencies do
 end
 
 package :add_bundler do
-  requires :default_ruby
+  requires :default_ruby, config_gemrc
   
   # only need to symlink bundler because all other gems should be in Gemfile and can be run using bundle exec (or binstubs)
   runner "gem install bundler --version=1.0.18"
@@ -65,5 +65,19 @@ package :add_bundler do
   verify do 
     @commands << 'gem list | grep bundler' 
     has_symlink '/usr/local/bin/bundle', '/usr/local/rubies/ruby-1.9.2-p290/lib/ruby/gems/1.9.1/gems/bundler-1.0.18/bin/bundle'
+  end
+end
+
+package :config_gemrc do
+  requires :default_ruby, :deploy
+
+  gemrc_template =`cat #{File.join(ASSETS_PATH, 'gemrc')}`
+  gemrc_file = '/home/deploy/.gemrc'
+
+  push_text gemrc_template, gemrc_file
+  runner "chown deploy:deploy #{gemrc_file}"
+
+  verify do
+    has_file gemrc_file
   end
 end

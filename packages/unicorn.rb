@@ -12,7 +12,7 @@ package :upstream_configuration do
   
   config_file = '/usr/local/nginx/sites-available/filter'
   symlink_file = '/usr/local/nginx/sites-enabled/filter'
-  config_template = `cat #{File.join(File.dirname(__FILE__), '..', 'assets', 'unicorn.conf')}`
+  config_template = ERB.new(File.read(File.join(ASSETS_PATH, 'unicorn.conf.erb'))).result
   
   push_text config_template, config_file
   runner "ln -s #{config_file} #{symlink_file}"

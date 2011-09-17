@@ -19,6 +19,8 @@ require 'packages/filter'
 require 'packages/ruby'
 require 'packages/redis'
 
+ASSETS_PATH = File.join(File.dirname(__FILE__), 'assets')
+
 policy :stack, :roles => :app do
   requires :initialize
   requires :system_update

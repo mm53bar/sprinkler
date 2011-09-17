@@ -4,12 +4,12 @@ upstream app_server {
 
 server {
   listen 80;
-  server_name tryfilter.com www.tryfilter.com;
+  server_name <%= HOST %> <%= "www.#{HOST}" %>;
 
-  access_log /var/applications/filter/current/log/access.log;
-  error_log /var/applications/filter/current/log/error.log;
+  access_log /var/applications/<%= APP_NAME %>/current/log/access.log;
+  error_log /var/applications/<%= APP_NAME %>/current/log/error.log;
 
-  root /var/applications/filter/current/public/;
+  root /var/applications/<%= APP_NAME %>/current/public/;
 
   location / {
     proxy_set_header X-Real-IP $remote_addr;
@@ -43,9 +43,9 @@ server {
 
 server {
   listen 80;
-  server_name assets.tryfilter.com;
+  server_name assets.<%= HOST %>;
   
-  root /var/applications/filter/current/public/;
+  root /var/applications/<%= APP_NAME %>/current/public/;
   
   #rewrite "^/([0-9]+)/(.*)" /$2;
 
