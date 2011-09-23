@@ -11,6 +11,16 @@ server {
 
   root /var/applications/<%= APP_NAME %>/current/public/;
 
+  if (-f $document_root/503.html) {
+    return 503;
+  }
+
+  error_page 503 @maintenance;
+  location @maintenance {
+    rewrite  ^(.*)$  /503.html last;
+    break;
+  }
+
   location / {
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -34,7 +44,7 @@ server {
     }
   }
 
-  error_page 500 502 503 504 /500.html;
+  error_page 500 502 504 /500.html;
   location /500.html {
     root /var/applications/filter/current/public;
   }
