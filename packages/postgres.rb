@@ -15,26 +15,26 @@ package :postgres_core do
 end
   
 package :postgres_user do
-  runner %{echo "CREATE ROLE #{DEPLOY_USER} WITH LOGIN ENCRYPTED PASSWORD '#{DEPLOY_POSTGRES_PASSWORD}';" | sudo -u postgres psql}
+  #runner %{echo "CREATE ROLE #{DEPLOY_USER} WITH LOGIN ENCRYPTED PASSWORD '#{DEPLOY_POSTGRES_PASSWORD}';" | sudo -u postgres psql}
   
-  #verify do
-  #  @commands << "mysqladmin -u root -p#{ROOT_PASSWORD} ping"
-  #end
+  verify do
+    @commands << "echo '\du' | psql -d filter_production | grep deploy"
+  end
 end
 
 package :postgres_database do
-  runner "sudo -u postgres createdb --owner=#{DEPLOY_USER} #{DB_NAME}"
+  #runner "sudo -u postgres createdb --owner=#{DEPLOY_USER} #{DB_NAME}"
   
-  #verify do
-  #  @commands << "mysqladmin -u root -p#{ROOT_PASSWORD} ping"
-  #end  
+  verify do
+    @commands << "sudo -u postgres psql -l | grep #{DB_NAME}"
+  end  
 end
 
 package :postgres_autostart do
   description "PostgreSQL: Autostart on reboot"
   requires :postgres_core
   
-  runner '/usr/sbin/update-rc.d postgresql-8.4 default'
+  runner '/usr/sbin/update-rc.d postgresql-8.4 defaults'
 end
 
 %w[start stop restart reload].each do |command|
