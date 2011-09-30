@@ -15,7 +15,7 @@ package :postgres_core do
 end
   
 package :postgres_user do
-  #runner %{echo "CREATE ROLE #{DEPLOY_USER} WITH LOGIN ENCRYPTED PASSWORD '#{DEPLOY_POSTGRES_PASSWORD}';" | sudo -u postgres psql}
+  runner %{echo "CREATE ROLE #{DEPLOY_USER} WITH LOGIN ENCRYPTED PASSWORD '#{DEPLOY_POSTGRES_PASSWORD}';" | sudo -u postgres psql}
   
   verify do
     @commands << "echo '\du' | psql -d filter_production | grep deploy"
@@ -23,7 +23,7 @@ package :postgres_user do
 end
 
 package :postgres_database do
-  #runner "sudo -u postgres createdb --owner=#{DEPLOY_USER} #{DB_NAME}"
+  runner "sudo -u postgres createdb --owner=#{DEPLOY_USER} #{DB_NAME}"
   
   verify do
     @commands << "sudo -u postgres psql -l | grep #{DB_NAME}"
