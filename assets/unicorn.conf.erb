@@ -1,5 +1,5 @@
 upstream app_server {
-  server unix:/var/applications/filter/current/tmp/sockets/unicorn.sock fail_timeout=0;
+  server unix:/var/applications/<%= APP_NAME %>/current/tmp/sockets/unicorn.sock fail_timeout=0;
 }
 
 server {
@@ -46,7 +46,7 @@ server {
 
   error_page 500 502 504 /500.html;
   location /500.html {
-    root /var/applications/filter/current/public;
+    root /var/applications/<%= APP_NAME %>/current/public;
   }
 
 }

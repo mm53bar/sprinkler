@@ -56,7 +56,7 @@ package :ruby_dependencies do
 end
 
 package :add_bundler do
-  requires :default_ruby, config_gemrc
+  requires :default_ruby, :config_gemrc
   
   # only need to symlink bundler because all other gems should be in Gemfile and can be run using bundle exec (or binstubs)
   runner "gem install bundler --version=1.0.18"
@@ -69,9 +69,9 @@ package :add_bundler do
 end
 
 package :config_gemrc do
-  requires :default_ruby, :deploy
+  requires :default_ruby
 
-  gemrc_template =`cat #{File.join(ASSETS_PATH, 'gemrc')}`
+  gemrc_template =`cat #{File.join(File.dirname(__FILE__), '..', 'assets', 'gemrc')}`
   gemrc_file = '/home/deploy/.gemrc'
 
   push_text gemrc_template, gemrc_file

@@ -18,7 +18,7 @@ package :postgres_user do
   runner %{echo "CREATE ROLE #{DEPLOY_USER} WITH LOGIN ENCRYPTED PASSWORD '#{DEPLOY_POSTGRES_PASSWORD}';" | sudo -u postgres psql}
   
   verify do
-    @commands << "echo '\du' | psql -d filter_production | grep deploy"
+    @commands << "echo '\\du' | sudo -u postgres psql -d filter_production | grep deploy"
   end
 end
 

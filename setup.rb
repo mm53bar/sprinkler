@@ -41,9 +41,9 @@ end
 
 deployment do
   delivery :ssh do
-    roles :app => '173.255.247.39'
-    user 'root'
-    password 'shed18[whams'
+    roles :app => HOSTIP
+    user ROOT_USER
+    password ROOT_USER_PASSWORD
   end
 
   source do
