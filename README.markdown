@@ -1,6 +1,6 @@
-Update the config file with your settings.  Also take a look at the ssh connection info at the bottom of the setup file.
+Copy the example config file to 'config.rb' and update it with your settings.
 
 ##Instructions
     
     bundle install
-    bin/sprinkle -v -c -s setup.rb
+    bundle exec sprinkle -v -c -s setup.rb
