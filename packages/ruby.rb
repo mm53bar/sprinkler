@@ -9,8 +9,7 @@ package :install_ruby_build do
   
   runner "mkdir -p /usr/local/sources && cd /usr/local/sources"
   runner "git clone git://github.com/sstephenson/ruby-build.git"
-  runner "cd ruby-build"
-  runner "./install.sh"
+  runner "cd ruby-build && ./install.sh"
   
   verify do
     has_executable 'ruby-build'
