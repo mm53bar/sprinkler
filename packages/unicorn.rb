@@ -21,5 +21,6 @@ package :upstream_configuration do
   verify do
     has_file config_file
     has_symlink symlink_file
+    file_contains config_file, config_template
   end
 end
