@@ -15,11 +15,11 @@ package :app_dir do
 end
 
 package :known_hosts do
-  description "Add codebase to known_hosts so that capistrano doesn't prompt for it"
+  description "Add git host to known_hosts so that capistrano doesn't prompt for it"
   
-  runner "sudo -u #{DEPLOY_USER} -i -- 'ssh-keyscan codebasehq.com >> ~/.ssh/known_hosts'"
+  runner "sudo -u #{DEPLOY_USER} -i -- 'ssh-keyscan #{GIT_HOST} >> ~/.ssh/known_hosts'"
   
   verify do
-    file_contains '/home/deploy/.ssh/known_hosts', 'codebasehq.com'
+    file_contains '/home/deploy/.ssh/known_hosts', GIT_HOST
   end
 end

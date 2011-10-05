@@ -7,3 +7,4 @@ DEPLOY_USER_PASSWORD = 'my_deploy_password'
 DEPLOY_POSTGRES_PASSWORD = 'my_postgres_password'
 APP_NAME = 'mysite'
 DB_NAME = "#{APP_NAME}_production"
+GIT_HOST = "domain.com"
