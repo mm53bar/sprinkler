@@ -15,7 +15,7 @@ require 'packages/timezone'
 require 'packages/postgres'
 require 'packages/nginx'
 require 'packages/unicorn'
-require 'packages/filter'
+require 'packages/app'
 require 'packages/ruby'
 require 'packages/redis'
 

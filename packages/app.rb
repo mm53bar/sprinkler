@@ -1,16 +1,16 @@
-package :filter, :provides => :app do
-  description "Finalize settings for the app"
+package :rails_app, :provides => :app do
+  description "Finalize settings for the rails app"
 
   requires :app_dir, :known_hosts
 end
 
 package :app_dir do
   description 'Create the application directory'
-  runner "mkdir -p /var/applications/filter"
-  runner "chown '#{DEPLOY_USER}' /var/applications/filter"
+  runner "mkdir -p /var/applications/#{APP_NAME}"
+  runner "chown '#{DEPLOY_USER}' /var/applications/#{APP_NAME}"
   
   verify do
-    has_directory '/var/applications/filter'
+    has_directory "/var/applications/#{APP_NAME}"
   end
 end
 
