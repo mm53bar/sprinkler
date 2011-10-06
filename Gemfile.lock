@@ -1,8 +1,19 @@
+GIT
+  remote: git://github.com/Shift81/sprinkle.git
+  revision: e55b6e4d9f6af3eaa7067c47044776143823c7d2
+  branch: fix_transfer
+  specs:
+    sprinkle (0.4.2)
+      activesupport (>= 2.0.2)
+      capistrano (>= 2.5.5)
+      highline (>= 1.4.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (3.0.10)
-    capistrano (2.8.0)
+    activesupport (3.1.0)
+      multi_json (~> 1.0)
+    capistrano (2.9.0)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -10,6 +21,7 @@ GEM
       net-ssh-gateway (>= 1.1.0)
     highline (1.6.2)
     i18n (0.6.0)
+    multi_json (1.0.3)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -17,14 +29,10 @@ GEM
     net-ssh (2.2.1)
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
-    sprinkle (0.3.4)
-      activesupport (>= 2.0.2)
-      capistrano (>= 2.5.5)
-      highline (>= 1.4.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   i18n
-  sprinkle
+  sprinkle!
