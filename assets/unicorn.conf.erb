@@ -2,6 +2,13 @@ upstream app_server {
   server unix:/var/applications/<%= APP_NAME %>/current/tmp/sockets/unicorn.sock fail_timeout=0;
 }
 
+# This section will rewrite all requests to use the www subdomain
+# server {
+#   listen       80;
+#   server_name  <%= HOST %>;
+#   rewrite   ^  http://www.<%= HOST %>$request_uri?;
+# }
+
 server {
   listen 80;
   server_name <%= HOST %> <%= "*.#{HOST}" %>;
