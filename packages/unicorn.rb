@@ -3,7 +3,7 @@ package :unicorn, :provides => :appserver do
 
   # unicorn should be installed from your app's Gemfile so there is nothing to do here
 
-  optional :upstream_configuration
+  requires :upstream_configuration, :enable_site, :restart_nginx
 end
 
 package :upstream_configuration do
@@ -11,16 +11,32 @@ package :upstream_configuration do
   requires :nginx
   
   config_file = "/usr/local/nginx/sites-available/#{APP_NAME}"
-  symlink_file = "/usr/local/nginx/sites-enabled/#{APP_NAME}"
   config_template = ERB.new(File.read(File.join(File.join(File.dirname(__FILE__), '..', 'assets'), 'unicorn.conf.erb'))).result
   
+  runner "if [[ -e #{config_file} ]]; then rm #{config_file}; fi"
   push_text config_template, config_file
-  runner "ln -s #{config_file} #{symlink_file}"
-  runner '/etc/init.d/nginx restart'
 
   verify do
     has_file config_file
-    has_symlink symlink_file
-    file_contains config_file, config_template
+    file_contains config_file, "*.#{HOST};"
+    file_contains config_file, "rewrite ^ http://#{HOST}$request_uri?;"
   end
+end
+
+package :enable_site do
+  description "Symlink vhost file into sites_enabled"
+  requires :upstream_configuration
+
+  config_file = "/usr/local/nginx/sites-available/#{APP_NAME}"
+  symlink_file = "/usr/local/nginx/sites-enabled/#{APP_NAME}"
+
+  runner "ln -s #{config_file} #{symlink_file}"
+
+  verify do
+    has_symlink symlink_file
+  end
+end
+    
+package :restart_nginx do
+  runner '/etc/init.d/nginx restart'
 end
