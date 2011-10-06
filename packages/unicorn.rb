@@ -13,7 +13,8 @@ package :upstream_configuration do
   config_file = "/usr/local/nginx/sites-available/#{APP_NAME}"
   config_template = ERB.new(File.read(File.join(File.join(File.dirname(__FILE__), '..', 'assets'), 'unicorn.conf.erb'))).result
   
-  runner "if [[ -e #{config_file} ]]; then rm #{config_file}; fi"
+  # if config_file exists then remove it
+  runner "[[ -e #{config_file} ]] && rm #{config_file}"
   push_text config_template, config_file
 
   verify do
