@@ -10,8 +10,8 @@ package :upstream_configuration do
   description "Nginx as Reverse Proxy Configuration for Unicorn"
   requires :nginx
   
-  config_file = '/usr/local/nginx/sites-available/filter'
-  symlink_file = '/usr/local/nginx/sites-enabled/filter'
+  config_file = "/usr/local/nginx/sites-available/#{APP_NAME}"
+  symlink_file = "/usr/local/nginx/sites-enabled/#{APP_NAME}"
   config_template = ERB.new(File.read(File.join(File.join(File.dirname(__FILE__), '..', 'assets'), 'unicorn.conf.erb'))).result
   
   push_text config_template, config_file
