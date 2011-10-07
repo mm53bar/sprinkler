@@ -1,4 +1,4 @@
-This will set up a new ubuntu image with nginx, postgres and ruby in preparation for your rails app to be served by unicorn.
+This will set up a new ubuntu image with nginx, postgres and ruby in preparation for your rails app to be served by unicorn.  All made possible by [Sprinkle](https://github.com/crafterm/sprinkle).
 
 ##Instructions
     
