@@ -33,3 +33,20 @@ Here's an easy snippet for your database.yml that will configure postgres:
 
 That should be it!  Contact me [@mm53bar](http://twitter.com/mm53bar) if you run into issues.
 
+##What you get
+
+* nginx
+* postgresql
+* 'deploy' user for use with capistrano
+  * your public keys added for easy and secure ssh
+* app environment set up at /var/applications/app_name/current
+* git
+* unicorn-focussed vhost file for nginx
+* redis
+* ruby-build
+* ruby installed from source and symlinked 'cause rvm/rbenv is painful with capistrano
+
+##Contributing
+
+I'm by no means a sysadmin expert.  I've pieced this together over the past few months.  If you have some better ideas, submit a pull request!  Just be sure to figure out how to verify your steps using Sprinkle's verify method.
+
