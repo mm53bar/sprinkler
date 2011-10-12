@@ -13,6 +13,7 @@ package :install_ruby_build do
   
   verify do
     has_executable 'ruby-build'
+    has_executable 'rbenv-install'
   end
 end
 
