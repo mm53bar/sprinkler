@@ -18,14 +18,15 @@ package :install_ruby_build do
 end
 
 package :default_rubies do
-  requires :ruby_dependencies
+  requires :ruby_dependencies, :install_ruby_build
   
-  runner "ruby-build 1.9.2-p290 /usr/local/rubies/ruby-1.9.2-p290"
-  runner "ruby-build 1.8.7-p352 /usr/local/rubies/ruby-1.8.7-p352"
+  runner "ruby-build 1.9.2-p290 /opt/ruby-1.9.2-p290"
+  runner "ruby-build 1.8.7-p352 /opt/ruby-1.8.7-p352"
+  runner "chown -R #{DEPLOY_USER} /opt/ruby*"
   
   verify do
-    @commands << "/usr/local/rubies/ruby-1.9.2-p290/bin/ruby -v"
-    @commands << "/usr/local/rubies/ruby-1.8.7-p352/bin/ruby -v"
+    @commands << "/opt/ruby-1.9.2-p290/bin/ruby -v"
+    @commands << "/opt/ruby-1.8.7-p352/bin/ruby -v"
   end
 end
 
@@ -69,8 +70,6 @@ package :add_bundler do
 end
 
 package :config_gemrc do
-  requires :default_ruby
-
   gemrc_template =`cat #{File.join(File.dirname(__FILE__), '..', 'assets', 'gemrc')}`
   gemrc_file = '/home/deploy/.gemrc'
 
