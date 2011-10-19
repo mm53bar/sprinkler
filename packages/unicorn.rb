@@ -20,7 +20,7 @@ package :upstream_configuration do
   verify do
     has_file config_file
     file_contains config_file, "*.#{HOST};"
-    file_contains config_file, "rewrite ^ http://#{HOST}$request_uri?;"
+    file_contains config_file, "rewrite ^/(.*) http://#{HOST}/$1 permanent"
   end
 end
 

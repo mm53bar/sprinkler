@@ -2,66 +2,54 @@ upstream app_server {
   server unix:/var/applications/<%= APP_NAME %>/current/tmp/sockets/unicorn.sock fail_timeout=0;
 }
 
-# This section will rewrite all requests to use the www subdomain
-# server {
-#   listen       80;
-#   server_name  <%= HOST %>;
-#   rewrite   ^  http://www.<%= HOST %>$request_uri?;
-# }
-
 server {
-  listen 80;
-  server_name <%= HOSTIP %>;
-  rewrite ^ http://<%= HOST %>$request_uri?;
+  listen   80;
+  server_name  www.<%= HOST %>;
+  rewrite ^/(.*) http://<%= HOST %>/$1 permanent;
 }
 
 server {
   listen 80;
   server_name <%= HOST %> <%= "*.#{HOST}" %>;
 
+  client_max_body_size 4G;
+
   access_log /var/applications/<%= APP_NAME %>/current/log/access.log;
   error_log /var/applications/<%= APP_NAME %>/current/log/error.log;
 
   root /var/applications/<%= APP_NAME %>/current/public/;
 
-  if (-f $document_root/503.html) {
-    return 503;
-  }
+  try_files $uri/index.html $uri.html $uri @app;
+  error_page 502 503 =503                  @maintenance;
+  error_page 500 504 =500                  @server_error;
 
-  error_page 503 @maintenance;
-  location @maintenance {
-    rewrite  ^(.*)$  /503.html last;
-    break;
-  }
-
-  location / {
+  location @app {
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
 
-    # this is the meat of the rails page caching config
-    # it adds .html to the end of the url and then checks
-    # the filesystem for that file. If it exists, then we
-    # rewite the url to have explicit .html on the end  
-    # and then send it on its way to the next config rule.
-    # if there is no file on the fs then it sets all the  
-    # necessary headers and proxies to our upstream unicorns
-    if (-f $request_filename.html) {
-      rewrite (.*) $1.html break;
-    }
+    # enable this if and only if you use HTTPS, this helps Rack
+    # set the proper protocol for doing redirects:
+    # proxy_set_header X-Forwarded-Proto https;
 
-    if (!-f $request_filename) {
-      proxy_pass http://app_server;
-      break;
-    }
+    proxy_pass http://app_server;
   }
 
-  error_page 500 502 504 /500.html;
-  location /500.html {
+  location @maintenance {
     root /var/applications/<%= APP_NAME %>/current/public;
+    try_files $uri $uri/ /503.html =503;
   }
 
+  location @server_error {
+    root /var/applications/<%= APP_NAME %>/current/public;
+    try_files $uri $uri/ /500.html =500;
+  }
+
+  location = /favicon.ico {
+    expires    max;
+    add_header Cache-Control public;
+  }
 }
 
 server {
@@ -70,8 +58,6 @@ server {
   
   root /var/applications/<%= APP_NAME %>/current/public/;
   
-  #rewrite "^/([0-9]+)/(.*)" /$2;
-
   gzip_static on;
   expires     max;
   add_header  Cache-Control public;
